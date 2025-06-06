@@ -1,0 +1,27 @@
+<div class="form-container">
+  <h2>Register</h2>
+
+  <form (ngSubmit)="onRegister()">
+    <label>Username</label>
+    <input type="text" [(ngModel)]="registerData.username" name="username" required />
+
+    <label>Password</label>
+    <input type="password" [(ngModel)]="registerData.password" name="password" required />
+
+    <label>Confirm Password</label>
+    <input type="password" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" required />
+
+    <label>Role</label>
+    <select [(ngModel)]="registerData.role" name="role" required>
+      <option value="" disabled>Select role</option>
+      <option value="USER">User</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p class="switch-text">
+    Already have an account? <a routerLink="/login">Login</a>
+  </p>
+</div>

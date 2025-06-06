@@ -1,0 +1,30 @@
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>User Roles</h2>
+    <ul>
+      <li>Guest</li>
+      <li>User</li>
+      <li>Admin</li>
+      <li>Manager</li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Top Navbar -->
+    <div class="navbar">
+     <h2><span class="logo">Role-Based App</span></h2>
+      <div class="nav-links">
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+        <a href="#" *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+      </div>
+    </div>
+
+    <!-- Welcome Text -->
+    <div class="content">
+      <h1>Welcome to Role-Based Application</h1>
+    </div>
+  </div>
+</div>
