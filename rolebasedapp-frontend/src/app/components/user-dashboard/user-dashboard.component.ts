@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,13 +6,20 @@ import { Router } from '@angular/router';
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css']
 })
-export class UserDashboardComponent {
+export class UserDashboardComponent implements OnInit {
+  activeSection: string = 'dashboard';
 
   constructor(private router: Router) {}
 
-  logOut() {
-    sessionStorage.clear(); // Ya sessionStorage.removeItem('email'); sessionStorage.removeItem('role');
-    this.router.navigate(['/login']);
+  ngOnInit(): void {}
+
+  setSection(section: string) {
+    this.activeSection = section;
   }
 
+  logOut() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
+  }
 }
