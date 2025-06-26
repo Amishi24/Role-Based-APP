@@ -1,15 +1,40 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component'; // create later
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/home' }
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: '', redirectTo: 'login', pathMatch: 'full' ,
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRole: 'admin' }
+  },
+  {
+    path: 'user-dashboard',
+    component: UserDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { expectedRole: 'user' }
+  },
+  {
+    path: '**',
+    redirectTo: 'login'
+  },
 ];
 
 @NgModule({

@@ -1,12 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-.form-container {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  width: 300px;
-  border-radius: 5px;
-}
-input, select {
-  display: block;
-  margin-bottom: 10px;
-  width: 100%;
+@import "primeicons/primeicons.css";
+
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
