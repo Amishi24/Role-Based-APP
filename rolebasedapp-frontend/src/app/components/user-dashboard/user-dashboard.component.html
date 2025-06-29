@@ -1,0 +1,97 @@
+<div class="dashboard-container">
+  <!-- Left Panel -->
+  <nav class="side-panel">
+    <div class="admin-profile">
+      <h3>User Panel</h3>
+    </div>
+    <ul class="menu-list">
+      <li [class.active]="activeSection === 'dashboard'" (click)="setSection('dashboard')">Dashboard</li>
+      <li [class.active]="activeSection === 'army'" (click)="setSection('army')">Army</li>
+      <li [class.active]="activeSection === 'navy'" (click)="setSection('navy')">Navy</li>
+      <li [class.active]="activeSection === 'airforce'" (click)="setSection('airforce')">Airforce</li>
+      <li [class.active]="activeSection === 'changePW'" (click)="setSection('changePW')">Change Password</li>
+      <li (click)="logOut()" class="logout">Logout</li>
+    </ul>
+  </nav>
+
+  <!-- Right Panel -->
+  <main class="main-panel">
+    <section *ngIf="activeSection === 'dashboard'">
+      <h2>Welcome, User!</h2>
+      <p>This is your user dashboard.</p>
+    </section>
+
+    <section *ngIf="activeSection === 'army'">
+      <h3>Army Section</h3>
+      <div *ngIf="categoryWeapons.length > 0; else noWeaponsArmy">
+        <table class="weapon-table">
+          <thead>
+            <tr>
+              <th>Weapon ID</th>
+              <th>Weapon Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let weapon of categoryWeapons">
+              <td>{{ weapon.weaponId }}</td>
+              <td>{{ weapon.weaponName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #noWeaponsArmy>
+        <p>No weapon assigned under this category</p>
+      </ng-template>
+    </section>
+
+    <section *ngIf="activeSection === 'navy'">
+      <h3>Navy Section</h3>
+      <div *ngIf="categoryWeapons.length > 0; else noWeaponsNavy">
+        <table class="weapon-table">
+          <thead>
+            <tr>
+              <th>Weapon ID</th>
+              <th>Weapon Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let weapon of categoryWeapons">
+              <td>{{ weapon.weaponId }}</td>
+              <td>{{ weapon.weaponName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #noWeaponsNavy>
+        <p>No weapon assigned under this category</p>
+      </ng-template>
+    </section>
+
+    <section *ngIf="activeSection === 'airforce'">
+      <h3>Airforce Section</h3>
+      <div *ngIf="categoryWeapons.length > 0; else noWeaponsAirforce">
+        <table class="weapon-table">
+          <thead>
+            <tr>
+              <th>Weapon ID</th>
+              <th>Weapon Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let weapon of categoryWeapons">
+              <td>{{ weapon.weaponId }}</td>
+              <td>{{ weapon.weaponName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #noWeaponsAirforce>
+        <p>No weapon assigned under this category</p>
+      </ng-template>
+    </section>
+
+    <section *ngIf="activeSection === 'changePW'">
+      <app-change-password-form></app-change-password-form>
+    </section>
+  </main>
+</div>

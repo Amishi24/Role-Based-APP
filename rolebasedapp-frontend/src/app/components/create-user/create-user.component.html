@@ -1,0 +1,27 @@
+<p>create-user works!</p>
+<div class="p-card p-p-4 p-shadow-4 p-mt-4" style="max-width: 500px; margin: auto;">
+  <h3 class="p-text-center">Create User</h3>
+
+  <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+    
+    <div class="p-field p-mb-3">
+      <label for="firstName">First Name</label>
+      <input pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName" required />
+    </div>
+
+    <div class="p-field p-mb-3">
+      <label for="lastName">Last Name</label>
+      <input pInputText id="lastName" name="lastName" [(ngModel)]="user.lastName" required />
+    </div>
+
+    <div class="p-field p-mb-3">
+      <label for="email">Email ID</label>
+      <input pInputText id="email" name="email" [(ngModel)]="user.email" required />
+    </div>
+
+    <div class="p-text-center">
+      <button pButton type="submit" label="Submit" icon="pi pi-check" class="p-button-success"></button>
+    </div>
+
+  </form>
+</div>

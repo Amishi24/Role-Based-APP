@@ -1,0 +1,174 @@
+<div class="dashboard-container">
+  <!-- Left Panel -->
+  <nav class="side-panel">
+    <div class="admin-profile">
+      <h3>Admin Panel</h3>
+    </div>
+    <ul class="menu-list">
+      <li [class.active]="activeSection === 'dashboard'" (click)="setSection('dashboard')">Dashboard</li>
+      <li [class.active]="activeSection === 'addUser'" (click)="setSection('addUser')">Add User</li>
+      <li [class.active]="activeSection === 'userMgmt'" (click)="setSection('userMgmt')">User Management</li>
+      <li [class.active]="activeSection === 'weaponMgmt'" (click)="setSection('weaponMgmt')">Weapon Management</li>
+      <li [class.active]="activeSection === 'changePW'" (click)="setSection('changePW')">Change Password</li>
+      <li (click)="logOut()" class="logout">Logout</li>
+    </ul>
+  </nav>
+
+  <!-- Right Panel -->
+  <main class="main-panel">
+    <!-- Dashboard/Profile Section -->
+    <section *ngIf="activeSection === 'dashboard'">
+      <h2>Welcome, Admin!</h2>
+      <p>This is your profile/dashboard section.</p>
+    </section>
+
+    <!-- Add User Section -->
+    <section *ngIf="activeSection === 'addUser'" class="form-section">
+      <h3>Add User</h3>
+      <form (ngSubmit)="saveUser()" #userForm="ngForm">
+        <div class="p-field p-mb-3">
+          <label for="firstName">First Name</label>
+          <input pInputText id="firstName" name="firstName" [(ngModel)]="selectedUser.firstName" required />
+        </div>
+        <div class="p-field p-mb-3">
+          <label for="lastName">Last Name</label>
+          <input pInputText id="lastName" name="lastName" [(ngModel)]="selectedUser.lastName" required />
+        </div>
+        <div class="p-field p-mb-3">
+          <label for="email">Email ID</label>
+          <input pInputText id="email" name="email" [(ngModel)]="selectedUser.email" required />
+        </div>
+        <div class="p-field p-mb-3">
+          <label for="role">Role</label>
+          <select id="role" name="role" [(ngModel)]="selectedUser.role" required class="p-inputtext">
+            <option value="" disabled>Select Role</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div>
+          <button pButton type="submit" label="Save" class="p-button-success p-mr-2"></button>
+          <button pButton type="button" label="Cancel" class="p-button-secondary" (click)="cancel()"></button>
+        </div>
+      </form>
+    </section>
+
+    <!-- User Management Section -->
+    <section *ngIf="activeSection === 'userMgmt'">
+      <h2 class="p-text-center">User List</h2>
+      <p-table [value]="users" class="p-mt-3" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email ID</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td [ngClass]="{'pending-user-row': !user.approved}">
+              {{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <button pButton type="button" icon="pi pi-pencil" class="p-button-info p-mr-2"
+                      (click)="updateUser(user.id)"></button>
+              <button pButton type="button" icon="pi pi-trash" class="p-button-danger p-mr-2"
+                      (click)="deleteUser(user.id)"></button>
+              <button pButton type="button" icon="pi pi-eye" class="p-button-secondary"
+                      (click)="userDetails(user.id)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </section>
+
+    <!-- Weapon Management Section -->
+    <section *ngIf="activeSection === 'weaponMgmt'" class="p-mt-4">
+      <app-weapon-management></app-weapon-management>
+    </section>
+
+    <!-- Change Password Section -->
+    <section *ngIf="activeSection === 'changePW'" class="p-mt-4">
+      <app-change-password-form></app-change-password-form>
+    </section>
+
+    <!-- Add/Edit User Dialog -->
+    <p-dialog header="{{ isEditMode ? 'Edit User' : 'Add User' }}"
+              [(visible)]="showAddEditForm"
+              [style]="{width: '500px'}"
+              [modal]="true">
+
+      <form (ngSubmit)="saveUser()" #userForm="ngForm">
+        <div class="p-field p-mb-3">
+          <label for="firstName">First Name</label>
+          <input pInputText id="firstName" name="firstName" [(ngModel)]="selectedUser.firstName" required />
+        </div>
+
+        <div class="p-field p-mb-3">
+          <label for="lastName">Last Name</label>
+          <input pInputText id="lastName" name="lastName" [(ngModel)]="selectedUser.lastName" required />
+        </div>
+
+        <div class="p-field p-mb-3">
+          <label for="email">Email ID</label>
+          <input pInputText id="email"
+                          name="email"
+                          [(ngModel)]="selectedUser.email"
+                          required
+                          [readonly]="isEditMode" />  
+        </div>
+
+        <div class="p-field p-mb-3">
+          <label for="role">Role</label>
+          <select id="role" name="role" [(ngModel)]="selectedUser.role" required class="p-inputtext">
+            <option value="" disabled>Select Role</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="p-field p-mb-3">
+          <label for="approved">Approved</label>
+          <p-inputSwitch 
+            id="approved"
+            name="approved"
+            [(ngModel)]="selectedUser.approved">
+          </p-inputSwitch>
+        </div>
+
+        <div class="p-text-center p-mt-3">
+          <button pButton type="submit"
+                  [label]="isEditMode ? 'Update' : 'Save'"
+                  icon="pi pi-check"
+                  class="p-button-success p-mr-2">
+          </button>
+          <button pButton type="button"
+                  label="Cancel"
+                  class="p-button-secondary"
+                  (click)="cancel()">
+          </button>
+        </div>
+      </form>
+    </p-dialog>
+
+    <!-- User Details Dialog -->
+    <p-dialog header="User Details" [(visible)]="showUserDetails" [style]="{width: '400px'}" [modal]="true">
+      <div *ngIf="selectedUser">
+        <div class="p-field p-mb-3">
+          <label class="p-text-bold">First Name:</label>
+          <div>{{ selectedUser.firstName }}</div>
+        </div>
+        <div class="p-field p-mb-3">
+          <label class="p-text-bold">Last Name:</label>
+          <div>{{ selectedUser.lastName }}</div>
+        </div>
+        <div class="p-field p-mb-3">
+          <label class="p-text-bold">Email ID:</label>
+          <div>{{ selectedUser.email }}</div>
+        </div>
+      </div>
+    </p-dialog>
+  </main>
+</div>

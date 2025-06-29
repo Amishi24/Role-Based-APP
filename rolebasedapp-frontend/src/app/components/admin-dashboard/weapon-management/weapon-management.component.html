@@ -1,0 +1,41 @@
+<div class="p-mb-3">
+  <label for="userEmail">User Email:</label>
+  <input pInputText id="userEmail" [(ngModel)]="userEmail" placeholder="Enter user email">
+</div>
+
+<div class="p-mb-3">
+  <label for="category">Weapon Category:</label>
+  <select id="category" [(ngModel)]="category" class="p-inputtext">
+    <option value="" disabled>Select Category</option>
+    <option value="Army">Army</option>
+    <option value="Navy">Navy</option>
+    <option value="Airforce">Airforce</option>
+  </select>
+</div>
+
+<div class="p-mb-3">
+  <button pButton type="button" label="Load Weapons" (click)="loadWeapons()"></button>
+</div>
+
+<p-table [value]="availableWeapons" *ngIf="availableWeapons.length > 0">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Weapon ID</th>
+      <th>Weapon Name</th>
+      <th>Assign</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-weapon>
+    <tr>
+    <td>{{ weapon.weaponId }}</td>
+    <td>{{ weapon.weaponName }}</td>
+      <td>
+        <p-checkbox
+            [binary]="true"
+            [ngModel]="assignedWeapons.includes(weapon.weaponId)"
+            (onChange)="toggleWeapon(weapon.weaponId, $event.checked)">
+        </p-checkbox>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
