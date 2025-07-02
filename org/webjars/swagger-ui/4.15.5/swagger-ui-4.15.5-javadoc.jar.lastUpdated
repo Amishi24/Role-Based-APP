@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Jul 02 21:00:26 IST 2025
+@default-central-https\://repo.maven.apache.org/maven2/.lastUpdated=1751470226020
+https\://repo.maven.apache.org/maven2/.error=Could not transfer artifact org.webjars\:swagger-ui\:jar\:javadoc\:4.15.5 from/to central (https\://repo.maven.apache.org/maven2)\: repo.maven.apache.org
