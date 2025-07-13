@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.p-toast {
+  z-index: 9999 !important;
+  position: fixed !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  display: block !important;
+  opacity: 1 !important;
+}

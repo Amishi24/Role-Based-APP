@@ -1,0 +1,27 @@
+<div class="login-wrapper">
+  <p-card class="login-card" header="Login">
+    <div class="p-fluid">
+
+      <div class="p-field mb-3">
+        <label for="username">Username</label>
+        <input pInputText id="username" [(ngModel)]="username" />
+      </div>
+
+      <div class="p-field mb-3">
+        <label for="role">Role</label>
+        <p-dropdown 
+          [options]="roles" 
+          [(ngModel)]="role" 
+          placeholder="Select a role"
+          [autoDisplayFirst]="false"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+
+      <button pButton label="Login" (click)="login()" class="p-button-primary w-full"></button>
+
+      <p *ngIf="errorMessage" class="p-error mt-3">{{ errorMessage }}</p>
+      
+    </div>
+  </p-card>
+</div>

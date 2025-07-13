@@ -1,0 +1,14 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #f4f4f4;
+}
+
+.main-content {
+  width: 80%;
+  overflow-y: auto;
+}

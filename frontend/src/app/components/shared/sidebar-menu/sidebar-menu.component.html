@@ -1,0 +1,29 @@
+<p-panel header="Menu" [toggleable]="true" class="m-2">
+  <div *ngIf="functionalities.length > 0; else noAccess" class="mt-3">
+    <button 
+      *ngFor="let func of functionalities" 
+      pButton 
+      class="p-button-primary mb-2 w-full text-left" 
+      [label]="func">
+    </button>
+
+    <button 
+      pButton 
+      icon="pi pi-sign-out" 
+      label="Logout" 
+      class="p-button-danger w-full mt-3" 
+      (click)="logout()">
+    </button>
+  </div>
+
+  <ng-template #noAccess>
+    <p class="p-text-secondary mt-2">No access granted yet</p>
+    <button 
+      pButton 
+      icon="pi pi-sign-out" 
+      label="Logout" 
+      class="p-button-danger w-full mt-3" 
+      (click)="logout()">
+    </button>
+  </ng-template>
+</p-panel>

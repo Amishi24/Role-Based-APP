@@ -1,0 +1,16 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #f4f4f4;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.main-content {
+  width: 80%;
+  padding: 2rem;
+}
