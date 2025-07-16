@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,9 +18,12 @@ import java.util.List;
 public class UserFunctionalityController {
 
     private final FunctionalityService functionalityService;
+    private final DynamicUserRepository userRepository;
 
-    public UserFunctionalityController(FunctionalityService functionalityService) {
+    @Autowired
+    public UserFunctionalityController(FunctionalityService functionalityService, DynamicUserRepository userRepository) {
         this.functionalityService = functionalityService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{userId}/functionalities")
@@ -33,7 +36,7 @@ public class UserFunctionalityController {
         functionalityService.assignFunctionalities(accessList);
         return ResponseEntity.ok("Functionalities assigned successfully");
     }
-    
+
     @DeleteMapping("/{userId}/revoke/{functionality}")
     public ResponseEntity<String> revokeFunctionality(
             @PathVariable Integer userId,
@@ -42,9 +45,6 @@ public class UserFunctionalityController {
         functionalityService.revokeFunctionality(userId, functionality);
         return ResponseEntity.ok("Functionality revoked successfully");
     }
-    
-    @Autowired
-    private DynamicUserRepository userRepository;
 
     @GetMapping("/details/{username}")
     public ResponseEntity<DynamicUser> getUserDetailsByUsername(@PathVariable String username) {
@@ -52,11 +52,22 @@ public class UserFunctionalityController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
     @GetMapping("/role/{roleName}/functionalities")
     public ResponseEntity<List<String>> getFunctionalitiesByRole(@PathVariable String roleName) {
         List<String> functionalities = functionalityService.getFunctionalitiesByRoleName(roleName);
         return ResponseEntity.ok(functionalities);
     }
-    
+
+    @GetMapping("/role/{roleName}/users")
+    public ResponseEntity<List<DynamicUser>> getUsersByRole(@PathVariable String roleName) {
+        List<DynamicUser> users = userRepository.findByUserRole(roleName);
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<List<String>> getAllDistinctRoles() {
+        List<String> roles = userRepository.findDistinctUserRoles();
+        return ResponseEntity.ok(roles);
+    }
 }
