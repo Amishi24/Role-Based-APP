@@ -8,4 +8,6 @@ public interface FunctionalityService {
 	 void assignFunctionalities(List<AssignFunctionalityRequest> accessList);
 	 void revokeFunctionality(Integer userId, String functionality);
 	 List<String> getFunctionalitiesByRoleName(String roleName);
+	 List<String> getUsernamesByRole(String roleName);
+
 }
