@@ -33,4 +33,14 @@ export class UserService {
       responseType: 'text'
     });
   }
+
+  // Get all distinct roles
+  getAllRoles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/roles`);
+  }
+
+  // Get users by role
+  getUsersByRole(role: string): Observable<DynamicUser[]> {
+    return this.http.get<DynamicUser[]>(`${this.baseUrl}/role/${role}/users`);
+  }
 }
