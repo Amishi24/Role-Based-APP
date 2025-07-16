@@ -14,10 +14,12 @@ public class FunctionalityServiceImpl implements FunctionalityService {
 
 	 private final UserFunctionalityAccessRepository accessRepo;
 	 private final RoleFunctionalityRepository roleRepo;
+	 private final DynamicUserRepository userRepo;
 
-	 public FunctionalityServiceImpl(UserFunctionalityAccessRepository accessRepo, RoleFunctionalityRepository roleRepo) {
+	 public FunctionalityServiceImpl(UserFunctionalityAccessRepository accessRepo, RoleFunctionalityRepository roleRepo, DynamicUserRepository userRepo) {
        this.accessRepo = accessRepo;
        this.roleRepo = roleRepo;
+       this.userRepo = userRepo;
 	 }
 
 	 @Override
@@ -65,4 +67,15 @@ public class FunctionalityServiceImpl implements FunctionalityService {
 	     return functionalities;
 	 }
 	 
+	 @Override
+	 public List<String> getUsernamesByRole(String roleName) {
+	     List<DynamicUser> users = userRepo.findByUserRole(roleName);
+	     List<String> usernames = new ArrayList<>();
+	     for (DynamicUser user : users) {
+	         usernames.add(user.getUserName());
+	     }
+	     return usernames;
+	 }
+	 
+
 }
