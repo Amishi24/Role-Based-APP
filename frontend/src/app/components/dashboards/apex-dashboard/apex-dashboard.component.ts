@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
 import { DynamicUser } from '../../../interfaces/dynamic-user.model';
@@ -10,13 +10,18 @@ import { MessageService } from 'primeng/api';
   templateUrl: './apex-dashboard.component.html',
   styleUrls: ['./apex-dashboard.component.css'],
 })
-export class ApexDashboardComponent {
-  username = '';
+export class ApexDashboardComponent implements OnInit {
+  roles: string[] = [];
+  users: DynamicUser[] = [];
+
+  selectedRole: string = '';
+  selectedUser: DynamicUser | null = null;
+
   user: DynamicUser | null = null;
   roleFunctionalities: string[] = [];
 
-  userFunctionalities = new Set<string>();      // from DB
-  selectedFunctionalities = new Set<string>();  // UI state
+  userFunctionalities = new Set<string>();
+  selectedFunctionalities = new Set<string>();
 
   constructor(
     private userService: UserService,
@@ -24,15 +29,41 @@ export class ApexDashboardComponent {
     private messageService: MessageService
   ) {}
 
-  logout() {
-    this.authService.logout();
+  ngOnInit() {
+    this.fetchAllRoles();
+  }
+
+  fetchAllRoles() {
+    this.userService.getAllRoles().subscribe((roles) => {
+      this.roles = roles;
+    });
+  }
+
+  onRoleChange() {
+    this.users = [];
+    this.selectedUser = null;
+    this.user = null;
+    this.roleFunctionalities = [];
+    this.userFunctionalities.clear();
+    this.selectedFunctionalities.clear();
+
+    this.userService.getUsersByRole(this.selectedRole).subscribe((users) => {
+      this.users = users;
+    });
+  }
+
+  onUsernameChange() {
+    this.user = null;
+    this.roleFunctionalities = [];
+    this.userFunctionalities.clear();
+    this.selectedFunctionalities.clear();
   }
 
   searchUser() {
-    this.userService.getUserByUsername(this.username).subscribe(user => {
-      this.user = user;
-      this.loadFunctionalities(user);
-    });
+    if (!this.selectedUser) return;
+
+    this.user = this.selectedUser;
+    this.loadFunctionalities(this.selectedUser);
   }
 
   loadFunctionalities(user: DynamicUser) {
@@ -81,5 +112,9 @@ export class ApexDashboardComponent {
       summary: 'Saved',
       detail: 'Changes applied to database'
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
