@@ -8,13 +8,40 @@
       <p><strong>Welcome to the Apex Dashboard!</strong></p>
 
       <div class="p-fluid mt-4">
+        <!-- Role Dropdown -->
         <div class="p-field mb-3">
-          <label for="username">Username</label>
-          <input id="username" type="text" pInputText [(ngModel)]="username" />
+          <label for="role">Select Role</label>
+          <p-dropdown
+            id="role"
+            [options]="roles"
+            [(ngModel)]="selectedRole"
+            placeholder="Select a role"
+            (onChange)="onRoleChange()">
+          </p-dropdown>
         </div>
 
-        <button pButton label="Get Functionalities" (click)="searchUser()"></button>
+        <!-- Username Dropdown -->
+        <div class="p-field mb-3">
+          <label for="username">Select Username</label>
+          <p-dropdown
+            id="username"
+            [options]="users"
+            [(ngModel)]="selectedUser"
+            optionLabel="userName"
+            placeholder="Select a user"
+            (onChange)="onUsernameChange()"
+            [disabled]="users.length === 0">
+          </p-dropdown>
+        </div>
 
+        <button
+          pButton
+          label="Get Functionalities"
+          (click)="searchUser()"
+          [disabled]="!selectedUser">
+        </button>
+
+        <!-- Functionalities Section -->
         <div *ngIf="user" class="mt-4">
           <h4>User: {{ user.userName }} | Role: {{ user.userRole }}</h4>
 
