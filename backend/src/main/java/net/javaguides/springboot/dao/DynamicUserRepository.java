@@ -11,7 +11,10 @@ public interface DynamicUserRepository extends JpaRepository<DynamicUser, Intege
     boolean existsByUserRole(String roleName);
     Optional<DynamicUser> findByUserName(String userName);
     List<DynamicUser> findByUserRole(String userRole);
-    
+
+    @Query("SELECT MAX(u.userId) FROM DynamicUser u")
+    Optional<Integer> findMaxUserId();
+
     @Query("SELECT DISTINCT u.userRole FROM DynamicUser u")
     List<String> findDistinctUserRoles();
 }

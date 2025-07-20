@@ -11,17 +11,20 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./apex-dashboard.component.css'],
 })
 export class ApexDashboardComponent implements OnInit {
+  // Tab 1 state
   roles: string[] = [];
   users: DynamicUser[] = [];
-
   selectedRole: string = '';
   selectedUser: DynamicUser | null = null;
-
   user: DynamicUser | null = null;
   roleFunctionalities: string[] = [];
-
   userFunctionalities = new Set<string>();
   selectedFunctionalities = new Set<string>();
+
+  // Tab 2 state
+  newRoleName: string = '';
+  newFunctionalities: string[] = [''];
+  newUsername: string = '';
 
   constructor(
     private userService: UserService,
@@ -33,6 +36,7 @@ export class ApexDashboardComponent implements OnInit {
     this.fetchAllRoles();
   }
 
+  // -------- Tab 1 Methods --------
   fetchAllRoles() {
     this.userService.getAllRoles().subscribe((roles) => {
       this.roles = roles;
@@ -67,10 +71,10 @@ export class ApexDashboardComponent implements OnInit {
   }
 
   loadFunctionalities(user: DynamicUser) {
-    this.userService.getFunctionalitiesByRole(user.userRole).subscribe(roleFuncs => {
+    this.userService.getFunctionalitiesByRole(user.userRole).subscribe((roleFuncs) => {
       this.roleFunctionalities = roleFuncs;
 
-      this.userService.getUserFunctionalities(user.userId).subscribe(userFuncs => {
+      this.userService.getUserFunctionalities(user.userId).subscribe((userFuncs) => {
         this.userFunctionalities = new Set(userFuncs);
         this.selectedFunctionalities = new Set(userFuncs);
       });
@@ -90,18 +94,22 @@ export class ApexDashboardComponent implements OnInit {
   saveChanges() {
     if (!this.user) return;
 
-    const toAssign = [...this.selectedFunctionalities].filter(f => !this.userFunctionalities.has(f));
-    const toRevoke = [...this.userFunctionalities].filter(f => !this.selectedFunctionalities.has(f));
+    const toAssign = [...this.selectedFunctionalities].filter(
+      (f) => !this.userFunctionalities.has(f)
+    );
+    const toRevoke = [...this.userFunctionalities].filter(
+      (f) => !this.selectedFunctionalities.has(f)
+    );
 
     if (toAssign.length > 0) {
-      const assignRequests: AssignFunctionalityRequest[] = toAssign.map(f => ({
+      const assignRequests: AssignFunctionalityRequest[] = toAssign.map((f) => ({
         userId: this.user!.userId,
-        functionality: f
+        functionality: f,
       }));
       this.userService.assignFunctionalities(assignRequests).subscribe();
     }
 
-    toRevoke.forEach(f => {
+    toRevoke.forEach((f) => {
       this.userService.revokeFunctionality(this.user!.userId, f).subscribe();
     });
 
@@ -110,11 +118,97 @@ export class ApexDashboardComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Saved',
-      detail: 'Changes applied to database'
+      detail: 'Changes applied to database',
     });
   }
 
-  logout() {
-    this.authService.logout();
+  // -------- Tab 2 Methods --------
+
+  addFunctionalityField() {
+    this.newFunctionalities.push('');
   }
+
+  removeFunctionalityField(index: number) {
+    if (this.newFunctionalities.length > 1) {
+      this.newFunctionalities.splice(index, 1);
+    }
+  }
+
+  submitNewData() {
+    const payload = {
+      roleName: this.newRoleName.trim(),
+      functionalities: this.newFunctionalities.filter((f) => f.trim() !== ''),
+      username: this.newUsername.trim(),
+    };
+
+    const isCreatingNewRole = !this.roles.includes(payload.roleName);
+
+    if (!payload.roleName) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validation Error',
+        detail: 'Role name is required.',
+      });
+      return;
+    }
+
+    if (isCreatingNewRole && payload.functionalities.length === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validation Error',
+        detail: 'At least one functionality is required for a new role.',
+      });
+      return;
+    }
+
+    this.userService.createRoleUserAndFunctionalities(payload).subscribe({
+      next: (res) => {
+        const msg = res.toLowerCase();
+
+        if (msg.includes('new role')) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'New role, functionalities, and user created',
+          });
+        } else if (msg.includes('user added to existing role')) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'User Created',
+            detail: 'New user added to existing role',
+          });
+        } else if (msg.includes('functionalities updated')) {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Updated',
+            detail: 'Role functionalities updated',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: res,
+          });
+        }
+
+        this.newRoleName = '';
+        this.newFunctionalities = [''];
+        this.newUsername = '';
+        this.fetchAllRoles();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Failed',
+          detail: err.error || 'An error occurred',
+        });
+      },
+    });
+  }
+
+  trackByIndex(index: number): number {
+    return index;
+  }
+
+
 }

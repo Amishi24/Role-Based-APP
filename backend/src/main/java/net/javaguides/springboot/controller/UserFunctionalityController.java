@@ -3,6 +3,8 @@ package net.javaguides.springboot.controller;
 import net.javaguides.springboot.service.FunctionalityService;
 import net.javaguides.springboot.dao.DynamicUserRepository;
 import net.javaguides.springboot.dto.AssignFunctionalityRequest;
+import net.javaguides.springboot.dto.CreateRoleUserRequest;
+import net.javaguides.springboot.dto.UserListResponseDto;
 import net.javaguides.springboot.entity.DynamicUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -69,5 +70,20 @@ public class UserFunctionalityController {
     public ResponseEntity<List<String>> getAllDistinctRoles() {
         List<String> roles = userRepository.findDistinctUserRoles();
         return ResponseEntity.ok(roles);
+    }
+
+    @PostMapping("/create-role-user-functionalities")
+    public ResponseEntity<String> createRoleWithUserAndFunctionalities(@RequestBody CreateRoleUserRequest request) {
+        String message;
+        try {
+            message = functionalityService.createRoleUserAndFunctionalities(
+                request.getRoleName(),
+                request.getFunctionalities(),
+                request.getUsername()
+            );
+            return ResponseEntity.ok(message);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }
