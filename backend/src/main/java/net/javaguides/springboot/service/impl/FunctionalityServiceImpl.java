@@ -167,4 +167,24 @@ public class FunctionalityServiceImpl implements FunctionalityService {
             }
         }
     }
+    
+    @Override
+    public List<UserListResponseDto> getAllRoleUserFunctionalities() {
+        List<UserFunctionalityAccess> accessList = accessRepo.findAll();
+        List<UserListResponseDto> result = new ArrayList<>();
+
+        for (UserFunctionalityAccess access : accessList) {
+            Integer userId = access.getUserId();
+            DynamicUser user = userRepo.findById(userId).orElse(null);
+            if (user != null) {
+                result.add(new UserListResponseDto(
+                    access.getRoleName(),
+                    user.getUserName(),
+                    access.getFunctionality()
+                ));
+            }
+        }
+
+        return result;
+    }
 }

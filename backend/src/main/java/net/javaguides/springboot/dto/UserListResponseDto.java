@@ -2,16 +2,24 @@ package net.javaguides.springboot.dto;
 
 public class UserListResponseDto {
 	
-	private Integer userId;
+	private String roleName;
     private String userName;
-    private String userRole;
+    private String functionality;
     
-    // Getters and setters\
-	public Integer getUserId() {
-		return userId;
+    public UserListResponseDto() {}
+    
+    public UserListResponseDto(String roleName, String userName, String functionality) {
+        this.roleName = roleName;
+        this.userName = userName;
+        this.functionality = functionality;
+    }
+    
+    // Getters and setters
+	public String getRoleName() {
+		return roleName;
 	}
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	public String getUserName() {
 		return userName;
@@ -19,11 +27,17 @@ public class UserListResponseDto {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getUserRole() {
-		return userRole;
+	public String getFunctionality() {
+		return functionality;
 	}
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
+	public void setFunctionality(String functionality) {
+		this.functionality = functionality;
 	}
+    
+    
+	
+    
+    
+    
     
 }

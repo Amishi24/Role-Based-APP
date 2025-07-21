@@ -54,4 +54,8 @@ export class UserService {
       responseType: 'text'
     });
   }
+
+  getAllRoleUserFunctionalities(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/all-role-user-functionalities`);
+  }
 }

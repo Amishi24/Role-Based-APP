@@ -26,6 +26,13 @@ export class ApexDashboardComponent implements OnInit {
   newFunctionalities: string[] = [''];
   newUsername: string = '';
 
+  // Table data
+  userRoleFunctionalityData: {
+    roleName: string;
+    userName: string;
+    functionality: string;
+  }[] = [];
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -34,6 +41,7 @@ export class ApexDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAllRoles();
+    this.loadTableData();
   }
 
   // -------- Tab 1 Methods --------
@@ -120,6 +128,20 @@ export class ApexDashboardComponent implements OnInit {
       summary: 'Saved',
       detail: 'Changes applied to database',
     });
+
+    // Update table data after save
+    const updatedRows = [...this.selectedFunctionalities].map((f) => ({
+      roleName: this.user!.userRole,
+      userName: this.user!.userName,
+      functionality: f,
+    }));
+
+    this.userRoleFunctionalityData = this.userRoleFunctionalityData.filter(
+      (row) =>
+        row.roleName !== this.user!.userRole || row.userName !== this.user!.userName
+    );
+
+    this.userRoleFunctionalityData.push(...updatedRows);
   }
 
   // -------- Tab 2 Methods --------
@@ -191,6 +213,17 @@ export class ApexDashboardComponent implements OnInit {
           });
         }
 
+        // Add to table if valid
+        if (payload.username && payload.functionalities.length > 0) {
+          const newRows = payload.functionalities.map((f) => ({
+            roleName: payload.roleName,
+            userName: payload.username,
+            functionality: f,
+          }));
+
+          this.userRoleFunctionalityData.push(...newRows);
+        }
+
         this.newRoleName = '';
         this.newFunctionalities = [''];
         this.newUsername = '';
@@ -210,5 +243,23 @@ export class ApexDashboardComponent implements OnInit {
     return index;
   }
 
+  // -------- Table Actions --------
 
+  loadTableData() {
+    this.userService.getAllRoleUserFunctionalities().subscribe((data) => {
+      this.userRoleFunctionalityData = data;
+    });
+  }
+
+  onCopy(row: any) {
+    console.log('Copy clicked:', row);
+  }
+
+  onEdit(row: any) {
+    console.log('Edit clicked:', row);
+  }
+
+  onDelete(row: any) {
+    console.log('Delete clicked:', row);
+  }
 }

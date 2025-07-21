@@ -140,6 +140,37 @@
           </div>
         </p-tabPanel>
       </p-tabView>
+
+      <p-table
+        [value]="userRoleFunctionalityData"
+        [responsiveLayout]="'scroll'"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Role Name</th>
+            <th>User Name</th>
+            <th>Functionality</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td>{{ rowData.roleName }}</td>
+            <td>{{ rowData.userName }}</td>
+            <td>{{ rowData.functionality }}</td>
+            <td>
+              <button pButton icon="pi pi-copy" class="p-button-text p-button-sm" (click)="onCopy(rowData)"></button>
+              <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="onEdit(rowData)"></button>
+              <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="onDelete(rowData)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </p-card>
   </div>
 </div>

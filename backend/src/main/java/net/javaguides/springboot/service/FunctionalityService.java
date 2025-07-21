@@ -12,4 +12,6 @@ public interface FunctionalityService {
     List<String> getFunctionalitiesByRoleName(String roleName);
     List<String> getUsernamesByRole(String roleName);
     String createRoleUserAndFunctionalities(String roleName, List<String> functionalities, String username);
+    List<UserListResponseDto> getAllRoleUserFunctionalities();
+
 }

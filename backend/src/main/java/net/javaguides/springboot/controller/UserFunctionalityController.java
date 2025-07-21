@@ -86,4 +86,11 @@ public class UserFunctionalityController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+    
+    @GetMapping("/all-role-user-functionalities")
+    public ResponseEntity<List<UserListResponseDto>> getAllRoleUserFunctionalities() {
+        List<UserListResponseDto> data = functionalityService.getAllRoleUserFunctionalities();
+        return ResponseEntity.ok(data);
+    }
+    
 }
