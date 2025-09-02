@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://role-based-app.netlify.app")
 public class UserFunctionalityController {
 
     private final FunctionalityService functionalityService;
