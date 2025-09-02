@@ -19,6 +19,8 @@ import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { PanelModule } from 'primeng/panel';
+import { TabViewModule } from 'primeng/tabview';
+
 
 import { ApexDashboardComponent } from './components/dashboards/apex-dashboard/apex-dashboard.component';
 import { LoginComponent } from './components/login/login.component';
@@ -41,6 +43,7 @@ import { SidebarMenuComponent } from './components/shared/sidebar-menu/sidebar-m
   ],
   imports: [
     BrowserModule,
+    TabViewModule,
     PanelModule,
     AppRoutingModule,
     CardModule,

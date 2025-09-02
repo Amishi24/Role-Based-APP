@@ -33,4 +33,29 @@ export class UserService {
       responseType: 'text'
     });
   }
+
+  // Get all distinct roles
+  getAllRoles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/roles`);
+  }
+
+  // Get users by role
+  getUsersByRole(role: string): Observable<DynamicUser[]> {
+    return this.http.get<DynamicUser[]>(`${this.baseUrl}/role/${role}/users`);
+  }
+
+  // Add new role, functionalities, and user
+  createRoleUserAndFunctionalities(data: {
+    roleName: string;
+    functionalities: string[];
+    username: string;
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create-role-user-functionalities`, data, {
+      responseType: 'text'
+    });
+  }
+
+  getAllRoleUserFunctionalities(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/all-role-user-functionalities`);
+  }
 }
