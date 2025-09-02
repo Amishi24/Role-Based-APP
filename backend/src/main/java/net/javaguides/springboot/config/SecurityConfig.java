@@ -13,6 +13,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()                    // Disable CSRF for testing via Swagger/Curl
+            .cors()
+            .and() 
             .authorizeRequests()
             .antMatchers("/**").permitAll()      // Allow all endpoints without auth
             .anyRequest().authenticated();
