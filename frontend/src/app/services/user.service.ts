@@ -3,10 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicUser } from '../interfaces/dynamic-user.model';
 import { AssignFunctionalityRequest } from '../interfaces/assign-functionality-request.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private readonly baseUrl = 'http://localhost:8080/api/user';
+  // private readonly baseUrl = 'http://localhost:8080/api/user';
+  
+  private readonly baseUrl = `${environment.apiUrl}/api/user`;
 
   constructor(private http: HttpClient) {}
 
