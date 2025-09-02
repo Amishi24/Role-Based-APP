@@ -1,0 +1,28 @@
+<div class="dashboard-container">
+  <!-- Sidebar - 20% -->
+  <div class="sidebar">
+    <app-sidebar-menu></app-sidebar-menu>
+  </div>
+
+  <!-- Main Content - 80% -->
+  <div class="main-content">
+    <p-card header="Role1 Dashboard">
+      <div *ngIf="user">
+        <h4>Welcome</h4>
+        <p><strong>User:</strong> {{ user.userName }}</p>
+        <p><strong>Role:</strong> {{ user.userRole }}</p>
+
+        <div *ngIf="functionalities.length > 0; else noAccess">
+          <h5>Your Functionalities:</h5>
+          <ul>
+            <li *ngFor="let func of functionalities">{{ func }}</li>
+          </ul>
+        </div>
+
+        <ng-template #noAccess>
+          <p class="p-text-secondary">No access granted yet</p>
+        </ng-template>
+      </div>
+    </p-card>
+  </div>
+</div>
